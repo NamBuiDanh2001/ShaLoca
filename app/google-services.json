@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "806194626244",
+    "firebase_url": "https://sharelocal-bda98.firebaseio.com",
+    "project_id": "sharelocal-bda98",
+    "storage_bucket": "sharelocal-bda98.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:806194626244:android:8474c0f152351864",
+        "android_client_info": {
+          "package_name": "com.example.hp_bdn.shaloca"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "806194626244-tu6uh9jipl9ck4j4omug9eegl7ptlhoc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7lDaJty-IRh4yVsyzmJiizEzhT_d83fU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
