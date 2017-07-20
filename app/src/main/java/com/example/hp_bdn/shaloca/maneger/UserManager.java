@@ -11,8 +11,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import static com.example.hp_bdn.shaloca.constant.EntityConstant.VALID_EMAIL_ADDRESS_REGEX;
+
 
 /**
  * Created by HP_BDN on 19-Jul-17.
@@ -31,26 +32,26 @@ public class UserManager {
         return  instance ;
     }
 
-    public boolean ValidateLogin(String email, String password) {
+    public static boolean ValidateLogin(String email, String password) {
         boolean valiEmail = checkValiEmail(email);
         boolean valiPass = checkValiPass(password);
-        if(valiEmail&&valiPass){
+        if(valiEmail && valiPass){
             return true ;
         }
         return  false;
 
     }
 
-    private boolean checkValiPass(String password) {
+    public static boolean checkValiPass(String password) {
           if(password.length() < EntityConstant.Min_Char_Password){
               return false ;
           }
           return  true ;
     }
 
-    private boolean checkValiEmail(String email) {
-        Matcher matcher = EntityConstant.VALID_EMAIL_ADDRESS_REGEX.matcher(email);
-        return matcher.find();
+    public static boolean checkValiEmail(String email) {
+      Matcher matcher = Pattern.compile(EntityConstant.EMAIL_PATTERN).matcher(email);
+        return matcher.matches();
     }
 
 }

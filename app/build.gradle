@@ -25,13 +25,13 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
+    //firebase
+    //authucation
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.android.support:design:25.3.1'
     compile 'com.github.joaquimley:faboptions:1.1.2'
-    //firebase
     compile 'com.google.firebase:firebase-core:11.0.2'
-    //authucation
     compile 'com.google.firebase:firebase-auth:11.0.2'
     testCompile 'junit:junit:4.12'
 }
