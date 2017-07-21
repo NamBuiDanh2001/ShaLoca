@@ -17,6 +17,7 @@
     <string name="btn_cancel_verified_email">Check mail </string>
     <string name="title_dialog_error_login">Error login</string>
     <string name="accountUnExist">Account does not exist . Please register new account !</string>
+    <string name="trySendEmailVerified"> Try resend email</string>
 
     <string name="remember_login">Remember me</string>
     <string name="emaiorpassnull">Email or Pass is empty</string>
@@ -28,6 +29,9 @@
     <string name="valiPass">Paasword more than 6 letter </string>
     <string name="valiPassconfirm">Not matche password </string>
     <string name="sendEmailVerifEmail">Send Email complete ! Please check mail to verified  </string>
+
+    <string name="titleprocessBarRegister">Handling </string>
+    <string name="messProcessBarRegister">Wait ...</string>
 
 
 

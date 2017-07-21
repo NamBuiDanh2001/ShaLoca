@@ -1,5 +1,6 @@
 package com.example.hp_bdn.shaloca.view;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -32,6 +33,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
     private  TextInputLayout usernameWrapper , passwordWrapper , emailWrapper , passconfirmWrapper ;
     public  static final    String KEY_EMAIL = "email";
     public static final String KEY_PASS = "pass";
+    private ProgressDialog progressDialog ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +119,21 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_creatAcc :
-                handlRegister();
+                 progressDialog = new ProgressDialog(this , android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+                progressDialog.setCanceledOnTouchOutside(true);
+                progressDialog.setTitle(getString(R.string.titleprocessBarRegister));
+                progressDialog.setMessage(getString(R.string.messProcessBarRegister));
+//                progressDialog.setProgressStyle();
+                progressDialog.show();
+                new android.os.Handler().postDelayed(
+                        new Runnable() {
+                            public void run() {
+                                // On complete call either onLoginSuccess or onLoginFailed
+                                handlRegister();
+                                // onLoginFailed();
+                                progressDialog.dismiss();
+                            }
+                        },1000);
                 break;
             case R.id.tv_login :
                 Intent intent = new Intent(Register_Activity.this , LoginActivity.class);
@@ -128,9 +144,9 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
     }
 
     private void handlRegister() {
-        String email = edtmail.getText().toString();
+        final String email = edtmail.getText().toString();
         String username = edtUserName.getText().toString();
-        String pass = edtPass.getText().toString();
+        final String pass = edtPass.getText().toString();
         String passConfirm = edtPassConfirm.getText().toString();
          boolean chek = true ;
         if(username.length() <=3 ){
@@ -147,7 +163,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
         }
 
         if(chek){
-            Intent intent = new Intent(Register_Activity.this , LoginActivity.class);
+
             final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
             firebaseAuth.createUserWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
@@ -155,6 +171,7 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
                     if(task.isSuccessful()){
                         FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                             if(firebaseUser== null){
+                                progressDialog.dismiss();
                                 Snackbar snackbar = Snackbar.make(linearLayout,"Error Register ! " , Snackbar.LENGTH_LONG);
                                 snackbar.show();
 
@@ -163,18 +180,28 @@ public class Register_Activity extends AppCompatActivity implements View.OnClick
                                 firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        Snackbar snackbar = Snackbar.make(linearLayout,getString(R.string.sendEmailVerifEmail), Snackbar.LENGTH_LONG);
-                                        snackbar.show();
+                                        if(task.isSuccessful()){
+                                        Intent intent = new Intent();
+                                        intent.putExtra(KEY_EMAIL ,email);
+                                        intent.putExtra(KEY_PASS , pass);
+                                         setResult(RESULT_OK , intent);
+                                         finish();
                                     }
+                                    else {
+                                            Snackbar snackbar = Snackbar.make(linearLayout,"Error Register ! " , Snackbar.LENGTH_LONG);
+                                            snackbar.setDuration(4000);
+                                            snackbar.show();
+                                        }
+                                    }
+
                                 });
                             }
 
                     }
                 }
             });
-            intent.putExtra(KEY_EMAIL ,email);
-            intent.putExtra(KEY_PASS , pass);
-            startActivity(intent);
+
+
         }
 
     }

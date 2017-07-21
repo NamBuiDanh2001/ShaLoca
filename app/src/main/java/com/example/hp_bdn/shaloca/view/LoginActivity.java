@@ -1,14 +1,18 @@
 package com.example.hp_bdn.shaloca.view;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,11 +30,14 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-     private Button btn_cancellogin  , btn_login , btn_forgotPass , btn_register ;
+    private static final int CODE_REGISTER = 100;
+    private Button btn_cancellogin  , btn_login , btn_forgotPass , btn_register ;
     private LinearLayout linearLayout ;
      private EditText edt_passlogin , edt_emaillogin ;
      private  FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private CheckBox checkBoxRememberLogin ;
+    private TextInputLayout wapperEmail , wapperPass ;
+    private  ProgressDialog progressDialog ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,16 +45,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initView();
         listenerEvent();
     }
-
     private void listenerEvent() {
         btn_forgotPass.setOnClickListener(this);
         btn_login.setOnClickListener(this);
         btn_register.setOnClickListener(this);
         btn_cancellogin.setOnClickListener(this);
     }
-
     private void initView() {
-          linearLayout = (LinearLayout) findViewById(R.id.linearLogin);
+        linearLayout = (LinearLayout) findViewById(R.id.linearLogin);
+        wapperEmail = (TextInputLayout) findViewById(R.id.wapperEmailLogin);
+        wapperPass = (TextInputLayout) findViewById(R.id.wapperPassLogin);
         btn_cancellogin = (Button) findViewById(R.id.btn_cancel);
         btn_login = (Button) findViewById(R.id.btn_login);
         btn_register = (Button) findViewById(R.id.btn_rigister);
@@ -55,16 +62,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         edt_emaillogin = (EditText) findViewById(R.id.email);
         edt_passlogin = (EditText) findViewById(R.id.password);
         checkBoxRememberLogin = (CheckBox) findViewById(R.id.checknboxRememberLogin);
-        Intent intent = getIntent();
-        String pass , email ;
-        pass = intent.getStringExtra(Register_Activity.KEY_PASS);
-        email =intent.getStringExtra(Register_Activity.KEY_EMAIL);
-        if(pass != null){
-            edt_passlogin.setText(pass);
-        }
-        if(email != null){
-            edt_emaillogin.setText(email);
-        }
+
+        edt_emaillogin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    if(edt_emaillogin.getText().toString().isEmpty()){
+                        wapperEmail.setError(getString(R.string.hint_email));
+                    }
+                    else {
+                        wapperEmail.setErrorEnabled(false);
+                    }
+                }
+            }
+        });
+        edt_passlogin.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if(!hasFocus){
+                    if(edt_passlogin.getText().toString().isEmpty()){
+                        wapperPass.setError(getString(R.string.hint_password));
+                    }
+                    else {
+                        wapperPass.setErrorEnabled(false);
+                    }
+                }
+            }
+        });
+
     }
 
     @Override
@@ -80,40 +106,68 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 break;
             case R.id.btn_forgot_password :
+                Toast.makeText(this, "chua lam ", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_login :
-                String email = String.valueOf(edt_emaillogin.getText());
-                String pass = String.valueOf(edt_passlogin.getText());
-                if(email.isEmpty()|| pass.isEmpty()){
-                    Toast.makeText(this,getString(R.string.emaiorpassnull), Toast.LENGTH_LONG).show();
-                }
+                final String email = String.valueOf(edt_emaillogin.getText());
+                final String pass = String.valueOf(edt_passlogin.getText());
+                progressDialog  = new ProgressDialog(this , android.R.style.Theme_DeviceDefault_Light_Dialog_Alert);
+                progressDialog.setCanceledOnTouchOutside(true);
+                progressDialog.setTitle(getString(R.string.titleprocessBarRegister));
+                progressDialog.setMessage(getString(R.string.messProcessBarRegister));
+//                progressDialog.setProgressStyle();
+                progressDialog.show();
+
                 if(!pass.isEmpty()&& !email.isEmpty()){
-                    // pass more than 6 letter
-                    if(!UserManager.ValidateLogin(email , pass)){
-                        InnitAlterDialog(getString(R.string.title_dialog_error_login) ,
-                                getString(R.string.mess_dialog_error_login) , R.style.Theme_AppCompat_DayNight_Dialog_Alert).create().show();
-                    }
-                    else {
-                        handlerLogin(email, pass);
-                    }
+                    new android.os.Handler().postDelayed(
+                            new Runnable() {
+                                public void run() {
+                                    // On complete call either onLoginSuccess or onLoginFailed
+                                    handlerLogin(email, pass);
+                                    // onLoginFailed();
+                                    progressDialog.dismiss();
+
+                                }
+                            },1000);
+
                 }
                 break;
             case R.id.btn_rigister :
                 Intent intent = new Intent(LoginActivity.this, Register_Activity.class);
-                startActivity(intent);
+                startActivityForResult(intent , CODE_REGISTER);
                 break;
         }
     }
 
-    private void handlerLogin(String email, String pass) {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode== RESULT_OK && requestCode== CODE_REGISTER){
+            String pass , email ;
+            pass = data.getStringExtra(Register_Activity.KEY_PASS);
+            email =data.getStringExtra(Register_Activity.KEY_EMAIL);
+            if(email != null && pass != null){
+                Snackbar snackbar = Snackbar.make(linearLayout,getString(R.string.sendEmailVerifEmail), Snackbar.LENGTH_LONG);
+                snackbar.setDuration(4000);
+                snackbar.show();
+                edt_emaillogin.setText(email);
+                edt_passlogin.setText(pass);
+            }
 
+        }
+
+
+    }
+
+    private void handlerLogin(String email, String pass){
              firebaseAuth.signInWithEmailAndPassword(email , pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                  @Override
                  public void onComplete(@NonNull Task<AuthResult> task) {
                        if(task.isSuccessful()){
-                          FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                          final FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
                            if(firebaseUser == null){
                                Snackbar snackbar = Snackbar.make(linearLayout,"Error !", Snackbar.LENGTH_LONG);
+                               snackbar.setDuration(4000);
                                snackbar.show();
 
                            }
@@ -121,7 +175,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                if (!firebaseUser.isEmailVerified()) {
 //                               AlertDialog.Builder builder =   InnitAlterDialog(getString(R.string.title_dialog_error_login) ,
 //                                       getString(R.string.mess_dialog_error_accountUnverified ), R.layout.dialog_verified_email );
-                                   handlerEmailVerified(firebaseUser);
+//                                   handlerEmailVerified(firebaseUser);
+                                   Snackbar snackbar = Snackbar.make(linearLayout, getString(R.string.mess_dialog_error_accountUnverified), Snackbar.LENGTH_LONG);
+                                    snackbar.setDuration(5000);
+                                    snackbar.setActionTextColor(Color.RED);
+                                    snackbar.setAction(getString(R.string.trySendEmailVerified), new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                             firebaseUser.sendEmailVerification().addOnCompleteListener(LoginActivity.this, new OnCompleteListener<Void>() {
+                                                 @Override
+                                                 public void onComplete(@NonNull Task<Void> task) {
+                                                       if(task.isSuccessful()){
+                                                           Toast.makeText(LoginActivity.this, "Send Email Complete !", Toast.LENGTH_SHORT).show();
+                                                       }
+                                                       else {
+                                                           Toast.makeText(LoginActivity.this, "Error "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                                       }
+                                                 }
+                                             });
+                                        }
+                                    });
+                                   snackbar.show();
                                }
                                else {
                                   loginsussces();
@@ -130,7 +204,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                        }
                        else {
 
-                           Snackbar snackbar = Snackbar.make(linearLayout, getString(R.string.accountUnExist), Snackbar.LENGTH_LONG);
+                           Log.i("error ", "onComplete: " + task.getException().getMessage() + "string "+ task.getException().toString());
+
+                           Snackbar snackbar = Snackbar.make(linearLayout, task.getException().getMessage(), Snackbar.LENGTH_LONG);
+                           snackbar.setDuration(4000);
                            snackbar.show();
                        }
                  }
@@ -140,42 +217,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void loginsussces() {
         Intent intent = new Intent(LoginActivity.this , MainActivity.class);
         startActivity(intent);
-    }
-
-    private void handlerEmailVerified(final FirebaseUser firebaseUser ) {
-        final Dialog dialog = new Dialog(LoginActivity.this ,R.style.Theme_AppCompat_Light_Dialog);
-        dialog.setContentView(R.layout.dialog_verified_email);
-        Button btnCheckmailVerified = (Button) dialog.findViewById(R.id.btn_checkverifiedEmail);
-        Button btnSendkmailVerified = (Button) dialog.findViewById(R.id.btn_sendverifiedEmail);
-        dialog.setTitle(getString(R.string.title_dialog_error_login));
-        dialog.show();
-        dialog.setCanceledOnTouchOutside(true);
-        btnSendkmailVerified.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        btnCheckmailVerified.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                firebaseUser.sendEmailVerification().addOnCompleteListener(LoginActivity.this, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            Snackbar snackbar = Snackbar.make(linearLayout,getString(R.string.sendEmailVerifEmail), Snackbar.LENGTH_LONG);
-                            snackbar.show();
-                        }
-                        else {
-                            Snackbar snackbar = Snackbar.make(linearLayout,task.getException().getMessage(), Snackbar.LENGTH_LONG);
-                            snackbar.show();
-                        }
-                    }
-                });
-                dialog.dismiss();
-            }
-        });
-
     }
 
 
