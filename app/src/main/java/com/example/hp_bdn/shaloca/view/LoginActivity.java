@@ -3,6 +3,7 @@ package com.example.hp_bdn.shaloca.view;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
@@ -31,6 +32,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int CODE_REGISTER = 100;
+    private static final String PASS = "pass";
     private Button btn_cancellogin  , btn_login , btn_forgotPass , btn_register ;
     private LinearLayout linearLayout ;
      private EditText edt_passlogin , edt_emaillogin ;
@@ -38,13 +40,40 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private CheckBox checkBoxRememberLogin ;
     private TextInputLayout wapperEmail , wapperPass ;
     private  ProgressDialog progressDialog ;
+
+    private final String PROFILE_USER = "profile_user";
+    private final String EMAIL = "email";
+    private final String AutoLogin = "auto_login";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+         Autologin();
         initView();
         listenerEvent();
     }
+
+    private void Autologin() {
+        SharedPreferences sharedPreferences = getSharedPreferences(PROFILE_USER , MODE_PRIVATE);
+        String email =sharedPreferences.getString(EMAIL , null);
+        String pass= sharedPreferences.getString(PASS, null);
+        boolean Autologin = sharedPreferences.getBoolean(AutoLogin , false);
+        if(Autologin){
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if(task.isSuccessful()){
+                        Intent intent = new Intent(LoginActivity.this , MainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+            });
+        }
+    }
+
     private void listenerEvent() {
         btn_forgotPass.setOnClickListener(this);
         btn_login.setOnClickListener(this);
@@ -52,6 +81,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         btn_cancellogin.setOnClickListener(this);
     }
     private void initView() {
+
         linearLayout = (LinearLayout) findViewById(R.id.linearLogin);
         wapperEmail = (TextInputLayout) findViewById(R.id.wapperEmailLogin);
         wapperPass = (TextInputLayout) findViewById(R.id.wapperPassLogin);
@@ -215,8 +245,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void loginsussces() {
+        if(checkBoxRememberLogin.isChecked()){
+            SharedPreferences.Editor editor = getSharedPreferences(PROFILE_USER ,MODE_PRIVATE).edit();
+            editor.putString(EMAIL , edt_emaillogin.getText().toString());
+            editor.putString(PASS , edt_passlogin.getText().toString());
+            editor.putBoolean(AutoLogin , true);
+            editor.commit();
+        }
         Intent intent = new Intent(LoginActivity.this , MainActivity.class);
         startActivity(intent);
+        finish();
     }
 
 
