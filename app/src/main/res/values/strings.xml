@@ -12,12 +12,14 @@
     <string name="btn_forgot_password">Forgot your password?</string>
     <string name="btn_link_to_register">Not a member? Get registered in ShaLoca now!</string>
     <string name="mess_dialog_error_login">Error check your email and password</string>
-    <string name="mess_dialog_error_accountUnverified">Your email is Unverified</string>
-    <string name="btn_verified_email">Send email verified </string>
-    <string name="btn_cancel_verified_email">Check mail </string>
+    <string name="mess_dialog_sendEmailResetPass">You will receive an email change password from ShaLoca.
+        Please confirm your email is correct.</string>
+    <string name="btn_confirm_emailResetPass">Confirm</string>
+    <string name="btn_chage_emailResetpass">Change</string>
     <string name="title_dialog_error_login">Error login</string>
     <string name="accountUnExist">Account does not exist . Please register new account !</string>
     <string name="trySendEmailVerified"> Click Try resend email</string>
+    <string name="mess_dialog_error_accountUnverified"> Email is unverified ! </string>
 
     <string name="remember_login">Remember me</string>
     <string name="emaiorpassnull">Email or Pass is empty</string>
@@ -32,7 +34,7 @@
 
     <string name="titleprocessBarRegister">Handling </string>
     <string name="messProcessBarRegister">Wait ...</string>
-
+    <string name="title_activity_maps">Map</string>
 
 
 </resources>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="com.example.hp_bdn.shaloca.view.WellcomActivity">
+    <ImageButton
+        android:layout_width="100dp"
+        android:id="@+id/imageicnapp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/googlemaps"
+        android:background="@color/colorPrimary"
+        android:layout_height="100dp"
+        tools:layout_editor_absoluteY="161dp"
+        tools:layout_editor_absoluteX="127dp" />
+    <ProgressBar
+        android:layout_width="50dp"
+        android:id="@+id/progressBar"
+        android:layout_height="50dp"
+        android:indeterminate="true"
+        tools:layout_editor_absoluteY="310dp"
+        tools:layout_editor_absoluteX="158dp" />
+
+
+</android.support.constraint.ConstraintLayout>

@@ -1,24 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <TextView
-        android:layout_marginTop="30dp"
         android:layout_width="wrap_content"
-        android:text="@string/mess_dialog_error_accountUnverified"
-        android:textSize="30dp"
+        android:text="Notification"
+        android:layout_marginLeft="20dp"
+        android:layout_gravity="center|left"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:id="@+id/notificationResetPass"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:textColor="@color/colorPrimary"
+        android:layout_height="wrap_content" />
+    <TextView
+
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:gravity="center"
+        android:text="@string/mess_dialog_sendEmailResetPass"
+        android:textSize="15dp"
+
         android:layout_gravity="center"
         android:layout_height="wrap_content" />
-    <Button
+    <EditText
         android:layout_width="match_parent"
-        android:text="@string/btn_verified_email"
-        android:id="@+id/btn_sendverifiedEmail"
+        android:id="@+id/edt_emailResetPass"
+        android:inputType="textEmailAddress"
+        android:layout_marginTop="10dp"
+        android:hint="Your Email"
+        android:paddingLeft="20dp"
         android:layout_height="wrap_content" />
-    <Button
+    <LinearLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
-        android:text="@string/btn_cancel_verified_email"
-        android:id="@+id/btn_checkverifiedEmail"
-        android:layout_height="wrap_content" />
+        android:orientation="horizontal"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/btn_chage_emailResetpass"
+            android:id="@+id/btn_changeEmail"
+            android:layout_height="match_parent" />
+        <Button
+
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:text="@string/btn_confirm_emailResetPass"
+            android:id="@+id/btn_confirmEmail"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
 
 </LinearLayout>

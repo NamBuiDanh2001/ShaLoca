@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
  */
 
 public class EntityConstant {
+    public static final int NUMBER_FRAGMENT = 3 ;
     public static  int  Min_Char_Password =  6 ;
     public static final String EMAIL_PATTERN = "^[a-zA-Z0-9#_~!$&'()*+,;=:.\"(),:;<>@\\[\\]\\\\]+@[a-zA-Z0-9-]+(\\.[a-zA-Z0-9-]+)*$";
 }

@@ -6,4 +6,6 @@
     <color name="colorlogin">#fff176</color>
     <color name="colorAccent">#b2fab4</color>
     <color name="white">#f8faf8</color>
+    <color name="colorSelection">#c9f2c9</color>
+
 </resources>

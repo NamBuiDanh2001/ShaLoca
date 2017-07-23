@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -19,6 +20,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hp_bdn.shaloca.R;
@@ -32,7 +34,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int CODE_REGISTER = 100;
-    private static final String PASS = "pass";
+    public static final String PASS = "pass";
     private Button btn_cancellogin  , btn_login , btn_forgotPass , btn_register ;
     private LinearLayout linearLayout ;
      private EditText edt_passlogin , edt_emaillogin ;
@@ -41,38 +43,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private TextInputLayout wapperEmail , wapperPass ;
     private  ProgressDialog progressDialog ;
 
-    private final String PROFILE_USER = "profile_user";
-    private final String EMAIL = "email";
-    private final String AutoLogin = "auto_login";
+    public static final String PROFILE_USER = "profile_user";
+    public final String EMAIL = "email";
+    public static final String AutoLogin = "auto_login";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-         Autologin();
+
         initView();
         listenerEvent();
     }
 
-    private void Autologin() {
-        SharedPreferences sharedPreferences = getSharedPreferences(PROFILE_USER , MODE_PRIVATE);
-        String email =sharedPreferences.getString(EMAIL , null);
-        String pass= sharedPreferences.getString(PASS, null);
-        boolean Autologin = sharedPreferences.getBoolean(AutoLogin , false);
-        if(Autologin){
-            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-            firebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        Intent intent = new Intent(LoginActivity.this , MainActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                }
-            });
-        }
-    }
+
 
     private void listenerEvent() {
         btn_forgotPass.setOnClickListener(this);
@@ -136,7 +120,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 break;
             case R.id.btn_forgot_password :
-                Toast.makeText(this, "chua lam ", Toast.LENGTH_SHORT).show();
+                handlingForgotPass();
                 break;
             case R.id.btn_login :
                 final String email = String.valueOf(edt_emaillogin.getText());
@@ -169,6 +153,57 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
+    private void handlingForgotPass() {
+        String email = edt_emaillogin.getText().toString();
+        Dialog dialogResetPass = new Dialog(this ,R.style.MyAlertDialogStyle);
+        dialogResetPass.setTitle("Notifivation ");
+        dialogResetPass.setContentView(R.layout.dialog_verified_email);
+
+        Button btn_chageEmail_Resetpass = (Button) dialogResetPass.findViewById(R.id.btn_changeEmail);
+        Button btn_Confirm_Email = (Button) dialogResetPass.findViewById(R.id.btn_confirmEmail);
+        final EditText edt_email_resetpass = (EditText) dialogResetPass.findViewById(R.id.edt_emailResetPass);
+        final TextView tvNotification = (TextView) dialogResetPass.findViewById(R.id.notificationResetPass);
+        if(!email.isEmpty()){
+            edt_email_resetpass.setEnabled(false);
+            edt_email_resetpass.setText(email);
+        }
+        btn_chageEmail_Resetpass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                edt_email_resetpass.setEnabled(true);
+                edt_email_resetpass.setFocusable(true);
+            }
+        });
+        btn_Confirm_Email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String emailresetpass = edt_email_resetpass.getText().toString();
+                if(emailresetpass.isEmpty()){
+                    tvNotification.setText("Email not empty");
+                }
+                else {
+                    firebaseAuth.sendPasswordResetEmail(emailresetpass).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()){
+                                tvNotification.setText("Susscessful ! Please check your email to confirm reset password .");
+
+                            }
+                            else {
+                                tvNotification.setText(task.getException().getMessage());
+                            }
+                        }
+                    });
+                }
+            }
+        });
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            dialogResetPass.create();
+        }
+        dialogResetPass.show();
+
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -183,6 +218,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 edt_emaillogin.setText(email);
                 edt_passlogin.setText(pass);
             }
+
 
         }
 
