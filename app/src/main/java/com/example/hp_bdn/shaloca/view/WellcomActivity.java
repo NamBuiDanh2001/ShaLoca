@@ -3,16 +3,14 @@ package com.example.hp_bdn.shaloca.view;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
+import android.os.Handler;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 
 import com.example.hp_bdn.shaloca.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+
 
 public class WellcomActivity extends AppCompatActivity {
     private final String PROFILE_USER = "profile_user";
@@ -43,12 +41,15 @@ public class WellcomActivity extends AppCompatActivity {
         @Override
         protected Boolean doInBackground(Void... params) {
             return Autologin();
-
         }
-
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             Intent intent ;
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                }
+            },3000);
             super.onPostExecute(aBoolean);
             if(aBoolean){
                 intent = new Intent(WellcomActivity.this , MainActivity.class);
@@ -59,7 +60,6 @@ public class WellcomActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-
         @Override
         protected void onProgressUpdate(Void... values) {
             super.onProgressUpdate(values);

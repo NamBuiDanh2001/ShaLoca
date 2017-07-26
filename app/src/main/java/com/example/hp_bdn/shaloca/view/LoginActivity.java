@@ -56,8 +56,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         listenerEvent();
     }
 
-
-
     private void listenerEvent() {
         btn_forgotPass.setOnClickListener(this);
         btn_login.setOnClickListener(this);

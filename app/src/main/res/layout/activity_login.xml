@@ -13,15 +13,15 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="@color/colorBackround"
+        android:background="@color/colorWhite"
         android:gravity="center"
         android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin"
+        android:padding="@dimen/size8"
         android:weightSum="1">
 
         <ImageView
             android:layout_width="110dp"
-            android:layout_height="@dimen/logo_w_h"
+            android:layout_height="@dimen/size78"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="30dp"
             android:src="@drawable/iconapp"
@@ -79,23 +79,25 @@
                 android:id="@+id/btn_login"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="20dip"
+                android:layout_margin="@dimen/size8"
+                android:textAllCaps="false"
                 android:layout_weight="1"
-                android:background="@color/colorlogin"
+                android:textSize="@dimen/size30"
+                android:background="@drawable/button_bg_green"
                 android:text="@string/btn_login"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/colorWhite" />
 
             <Button
                 android:id="@+id/btn_cancel"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dip"
+               android:layout_margin="@dimen/size8"
                 android:layout_weight="1"
-                android:background="@color/colorlogin"
+                android:textAllCaps="false"
+                android:textSize="@dimen/size30"
+                android:background="@drawable/button_bg_green"
                 android:text="@string/btn_cancel"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/colorWhite" />
         </LinearLayout>
 
         <Button
@@ -117,7 +119,7 @@
             android:background="@null"
             android:text="@string/btn_link_to_register"
             android:textAllCaps="false"
-            android:textColor="@color/white"
+            android:textColor="@color/colorWhite"
             android:textSize="15dp" />
     </LinearLayout>
 
