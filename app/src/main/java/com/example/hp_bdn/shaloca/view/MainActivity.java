@@ -4,10 +4,13 @@ package com.example.hp_bdn.shaloca.view;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -20,8 +23,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 
+import com.example.hp_bdn.shaloca.Manifest;
 import com.example.hp_bdn.shaloca.R;
 import com.example.hp_bdn.shaloca.adapter.FragmentAdapter;
 import com.example.hp_bdn.shaloca.adapter.ListResultSearchPlaceAdapter;
@@ -32,6 +37,8 @@ import com.github.florent37.bubbletab.BubbleTab;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.instantapps.ActivityCompat;
+import com.google.android.gms.instantapps.PackageManagerCompat;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
@@ -41,6 +48,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int REQUEST_SELECT_PLACE = 10001;
+    private static final int REQUEST_CODE = 1010;
     private NavigationView navigationView ;
     private  DrawerLayout drawer ;
     private ImageButton imageSearch ;
@@ -56,12 +64,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        checkPermissions();
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
          innitFragment();
@@ -69,6 +77,32 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         imageSearch = (ImageButton) findViewById(R.id.searchView);
         initView();
         innitViewPager();
+    }
+
+    private void checkPermissions() {
+        if(ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED){
+            android.support.v4.app.ActivityCompat.shouldShowRequestPermissionRationale
+                    (this, android.Manifest.permission.ACCESS_FINE_LOCATION);
+            android.support.v4.app.ActivityCompat.requestPermissions(this ,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION ,
+                            android.Manifest.permission.ACCESS_COARSE_LOCATION} ,REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode){
+            case REQUEST_CODE :
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                }
+
+        }
     }
 
     private void innitFragment() {
