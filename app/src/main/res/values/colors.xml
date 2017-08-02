@@ -13,4 +13,5 @@
     <color name="colorRed">#FF0037</color>
 
 
+    <color name="row_activated">#e0e0e0</color>
 </resources>

@@ -2,12 +2,14 @@ package com.example.hp_bdn.shaloca.fragment;
 
 import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -38,9 +40,13 @@ import static android.content.Context.LOCATION_SERVICE;
 
 public class MapFragment extends Fragment implements OnMapReadyCallback , LocationListener{
     private static final String TAG = "TAG";
+    private static final String CAMERA_POSITION = "camera_pos";
+    private static final String KEY_LOCATION = "last_location";
     private ProgressDialog Dialog;
     private MapView mapView;
     private GoogleMap googleMap;
+    private Location lastLocation ;
+    private CameraPosition lastcameraPosition  ;
 
     // Location Curent
     private Location myLocation;
@@ -64,33 +70,44 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Locati
         mapView.onResume();
         // lang nghe Map da innit xong
         mapView.getMapAsync(this);
-
         return view;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
 
+        if(savedInstanceState!= null){
+            lastLocation = savedInstanceState.getParcelable(KEY_LOCATION);
+            lastcameraPosition = savedInstanceState.getParcelable(CAMERA_POSITION);
+        }
+    }
     @Override
     public void onStart() {
-        Dialog = new ProgressDialog(this.getContext());
-        Dialog.setTitle("Loading.....");
-        Dialog.setMessage("Vui long cho ");
-        Dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        Dialog.show();
+//        Dialog = new ProgressDialog(this.getContext());
+//        Dialog.setTitle("Loading.....");
+//        Dialog.setMessage("Vui long cho ");
+//        Dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+//        Dialog.show();
+//        // Check permission access Global Positioning System
         super.onStart();
-
     }
 
     public void getValueFormActivity(String s) {
         Toast.makeText(getContext(), "hay" + s, Toast.LENGTH_SHORT).show();
     }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(googleMap!= null){
+            outState.putParcelable(CAMERA_POSITION , googleMap.getCameraPosition());
+            outState.putParcelable(KEY_LOCATION , googleMap.getMyLocation());
+        }
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Dialog.dismiss();
+
         this.googleMap = googleMap;
         initMap();
         listenMyLocation();// lang nghe su thay doi vi tri
@@ -105,7 +122,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Locati
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, (LocationListener) MapFragment.this);
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 10,  (LocationListener) MapFragment.this);
     }
-
     private void initMap() {
 //        geocoder = new Geocoder(this);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
@@ -114,12 +130,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Locati
         googleMap.getUiSettings().setIndoorLevelPickerEnabled(true);
         googleMap.getUiSettings().setTiltGesturesEnabled(true);
 
+
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             return;
         }
         googleMap.setMyLocationEnabled(true);
-        int maptyle = GoogleMap.MAP_TYPE_SATELLITE;
+        int maptyle = GoogleMap.MAP_TYPE_NORMAL;
         googleMap.setMapType(maptyle);
 //        googleMap.setOnMapClickListener(this);
 //        googleMap.setOnMapLongClickListener(this);
@@ -170,9 +187,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback , Locati
     public void showLocationSearch(Place place){
         place.getLatLng();
         CameraPosition cameraPosition = new CameraPosition(   place.getLatLng(), 17, 0, 0);
-        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//        googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+        // di chuyen camera vao vị trị này
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
     }
-
-
 
 }

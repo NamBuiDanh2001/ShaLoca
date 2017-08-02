@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="48dp"
+    android:paddingTop="4dp"
+    android:clickable="true"
+    android:background="@drawable/bg_list_row"
+    android:paddingLeft="?listPreferredItemPaddingLeft"
+    android:paddingRight="?listPreferredItemPaddingRight"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="match_parent">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="match_parent"
+            android:id="@+id/image_avata"
+            android:src="@drawable/iconapp"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:layout_alignBaseline="@id/image_avata"
+            android:id="@+id/imageOnline"
+            android:layout_width="10dp"
+            android:src="@drawable/iconapp"
+            android:layout_height="10dp" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="5"
+        android:orientation="horizontal"
+        android:layout_height="match_parent">
+        <TextView
+            android:text="dfdf"
+            android:textSize="13sp"
+            android:layout_width="0dp"
+            android:gravity="center|left"
+            android:id="@+id/tvUserName"
+            android:layout_weight="3"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:layout_width="0dp"
+            android:padding="9dp"
+            android:id="@+id/ImagesendMess"
+            android:src="@drawable/ic_fiend"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:padding="9dp"
+            android:id="@+id/imagemore"
+            android:src="@drawable/share_icon"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+</LinearLayout>
