@@ -35,7 +35,9 @@
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
+                android:background="@drawable/bg_gray"
                 android:layout_height="wrap_content"
+                android:padding="@dimen/size8"
                 android:layout_marginBottom="10dp"
                 android:hint="@string/hint_email"
                 android:inputType="textEmailAddress"
@@ -56,6 +58,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:hint="@string/hint_password"
+                android:background="@drawable/bg_gray"
+                android:padding="@dimen/size8"
                 android:inputType="textPassword"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white" />
@@ -109,7 +113,7 @@
             android:background="@null"
             android:text="@string/btn_forgot_password"
             android:textAllCaps="false"
-            android:textColor="@android:color/black" />
+            android:textColor="@color/colorGreen" />
 
         <Button
             android:id="@+id/btn_rigister"

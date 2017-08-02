@@ -56,9 +56,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/inputUseName"
-
+                android:padding="@dimen/size8"
+                android:layout_margin="@dimen/size8"
+                android:background="@drawable/bg_gray"
                 android:inputType="textCapWords"
-                android:paddingLeft="10dp" />
+                 />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Email Label -->
@@ -74,8 +76,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_email"
+                android:padding="@dimen/size8"
+                android:layout_margin="@dimen/size8"
+                android:background="@drawable/bg_gray"
                 android:inputType="textEmailAddress"
-                android:paddingLeft="10dp" />
+                />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password Label -->
@@ -92,7 +97,9 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_password"
                 android:inputType="textPassword"
-                android:paddingLeft="10dp" />
+                android:padding="@dimen/size8"
+                android:layout_margin="@dimen/size8"
+                android:background="@drawable/bg_gray" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -108,7 +115,9 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/hint_password"
                 android:inputType="textPassword"
-                android:paddingLeft="10dp" />
+                android:padding="@dimen/size8"
+                android:layout_margin="@dimen/size8"
+                android:background="@drawable/bg_gray" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Signup Button -->
