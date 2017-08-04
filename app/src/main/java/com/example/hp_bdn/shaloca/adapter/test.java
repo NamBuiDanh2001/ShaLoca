@@ -5,5 +5,5 @@ package com.example.hp_bdn.shaloca.adapter;
  */
 
 public class test {
-    private String slkdl;
+    private String e;
 }
