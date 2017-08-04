@@ -27,7 +27,7 @@ dependencies {
 
     //firebase
     //authucation
-    
+
 
     compile 'com.github.joaquimley:faboptions:1.1.2'
     compile 'com.github.joaquimley:faboptions:1.1.2'
