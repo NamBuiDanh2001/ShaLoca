@@ -6,7 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="hint_email">Email</string>
     <string name="hint_password">Password</string>
-    <string name="hint_passwordconfirm">Input confirm password </string>
+    <string name="hint_passwordconfirm">confirm password </string>
     <string name="btn_login">Login</string>
     <string name="btn_cancel">Cancel</string>
     <string name="btn_forgot_password">Forgot your password?</string>
