@@ -26,9 +26,8 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 
-import com.example.hp_bdn.shaloca.Manifest;
 import com.example.hp_bdn.shaloca.R;
-import com.example.hp_bdn.shaloca.adapter.FragmentAdapter;
+import com.example.hp_bdn.shaloca.adapter.FragmentMainAdapter;
 import com.example.hp_bdn.shaloca.adapter.ListResultSearchPlaceAdapter;
 import com.example.hp_bdn.shaloca.fragment.FriendFrangment;
 import com.example.hp_bdn.shaloca.fragment.MapFragment;
@@ -37,8 +36,6 @@ import com.github.florent37.bubbletab.BubbleTab;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.instantapps.ActivityCompat;
-import com.google.android.gms.instantapps.PackageManagerCompat;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
@@ -56,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private BubbleTab bubbleTab ;
     private ArrayList<Fragment> fragments;
     // init FagmentAdapter
-    private FragmentAdapter fragmentAdapter ;
+    private FragmentMainAdapter fragmentAdapter ;
     private ListResultSearchPlaceAdapter listResultSearchPlaceAdapter ;
 
     @Override
@@ -73,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
          innitFragment();
-        fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(),fragments);
+        fragmentAdapter = new FragmentMainAdapter(getSupportFragmentManager(),fragments);
         imageSearch = (ImageButton) findViewById(R.id.searchView);
         initView();
         innitViewPager();
